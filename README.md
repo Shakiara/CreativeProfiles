@@ -23,9 +23,9 @@ Creative Profiles allows each player to have completely independent Creative and
 
 ## Supported Versions
 
-| Minecraft | NeoForge | Multiworld | Status |
-|-----------|----------|------------|--------|
-| 1.21.1 | 21.1.228 | Required | Supported |
+| Minecraft | NeoForge  | Multiworld | Status |
+|-----------|-----------|------------|--------|
+| 1.21.1 | 21.1.228+ | Required | Supported |
 
 ---
 
@@ -46,14 +46,6 @@ These mods require no additional integration because they store their data throu
 - Refined Storage Curios Integration
 - Gravestone Curios Compatibility
 - Create Aeronautics Curios Compat
-
----
-
-## Requirements
-
-- Minecraft 1.21.1
-- NeoForge 21.1.x
-- Multiworld
 
 ---
 
