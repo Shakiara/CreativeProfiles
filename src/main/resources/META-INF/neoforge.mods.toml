@@ -9,14 +9,14 @@ displayName="${mod_name}"
 authors="Shakiara Feliciano"
 description='''Server-side profiles for separate Creative and Survival inventories, XP, Ender Chests, and positions.'''
 
-[[dependencies.${mod_id}]]
+[[dependencies.creativeprofiles]]
 modId="neoforge"
 type="required"
 versionRange="[${neo_version},)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.${mod_id}]]
+[[dependencies.creativeprofiles]]
 modId="minecraft"
 type="required"
 versionRange="${minecraft_version_range}"
