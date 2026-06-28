@@ -1,25 +1,134 @@
+# Creative Profiles
 
-Installation information
-=======
+Creative Profiles is a **server-side NeoForge mod** for **Minecraft 1.21.1** that provides independent player profiles for Creative and Survival gameplay.
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+Instead of sharing the same inventory, Ender Chest, XP and position across worlds, each profile maintains its own data, allowing players to switch between a Survival world and a Creative building world without affecting their progress.
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+---
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+# Features
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+* Separate Survival and Creative inventories
+* Separate Ender Chests
+* Separate XP levels
+* Separate player positions
+* Automatic profile restoration after reconnecting
+* Multiplayer support
+* Configurable world names
+* Diagnostic and maintenance commands 
+* Curios compatibility 
+* Cosmetic Armor Reworked compatibility
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+---
+
+# Commands
+
+| Command      | Description                                                  |
+| ------------ | ------------------------------------------------------------ |
+| `/creative`  | Switch to the Creative profile                               |
+| `/survival`  | Return to the Survival profile                               |
+| `/cp status` | Display profile information                                  |
+| `/cp backup` | Save the current profile manually                            |
+| `/cp fix`    | Repair the current profile state without deleting saved data |
+
+---
+
+# Requirements
+
+* Minecraft **1.21.1**
+* **NeoForge 21.1.228**
+* **Multiworld** (used to manage separate worlds)
+
+---
+
+# Installation
+
+1. Install NeoForge 1.21.1 on your server.
+2. Install Multiworld.
+3. Place the Creative Profiles `.jar` inside the `mods` folder.
+4. Start the server once to generate the configuration file.
+5. Configure your world names if necessary.
+6. Restart the server.
+
+---
+
+# Configuration
+
+Configuration file:
+
+```text
+config/creativeprofiles-common.toml
+```
+
+Default values:
+
+```toml
+creativeWorld = "creative"
+survivalWorld = "minecraft:overworld"
+```
+
+---
+
+# How it Works
+
+When switching to the Creative profile, the mod:
+
+* Saves the Survival inventory
+* Saves the Survival XP
+* Saves the Survival Ender Chest
+* Saves the Survival position
+* Loads the Creative profile
+
+When returning to Survival, the process is reversed.
+
+Each player has completely independent data stored in their own persistent player data.
+
+---
+
+# Multiplayer
+
+Creative Profiles stores data independently for every player.
+
+Each player has their own:
+
+* Inventory
+* Ender Chest
+* XP
+* Position
+* Current profile
+
+Using `/creative`, `/survival` or `/cp` commands only affects the player executing the command.
+
+---
+
+# Compatibility
+
+### Native Compatibility
+
+| Mod | Status |
+|------|--------|
+| Curios API | ✅ Supported |
+| Cosmetic Armor Reworked | 🚧 In Development |
+
+### Automatically Supported
+
+Because these mods use the Curios API, they work without additional integration:
+
+- KubeJS Curios
+- Refined Storage Curios Integration
+- Gravestone Curios Compatibility
+- Create Aeronautics Curios Compat
+
+---
+
+# Current Version
+
+**v1.0.0**
+
+Initial stable release.
+
+---
+
+# License
+
+This project is licensed under the MIT License.

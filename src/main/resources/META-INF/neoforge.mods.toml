@@ -22,3 +22,15 @@ type="required"
 versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies.creativeprofiles]]
+modId="curios"
+type="optional"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.creativeprofiles]]
+modId="cosmeticarmorreworked"
+type="optional"
+ordering="AFTER"
+side="BOTH"

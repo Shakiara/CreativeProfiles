@@ -1,10 +1,12 @@
 package com.shakiara.creativeprofiles.managers;
 
 import com.shakiara.creativeprofiles.Config;
+import com.shakiara.creativeprofiles.compat.CosmeticArmorCompat;
+import com.shakiara.creativeprofiles.compat.CuriosCompat;
 import com.shakiara.creativeprofiles.util.CommandUtil;
+import com.shakiara.creativeprofiles.util.MessageUtil;
 import com.shakiara.creativeprofiles.util.WorldUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.GameType;
@@ -14,7 +16,7 @@ public class ProfileManager {
         CompoundTag data = player.getPersistentData();
 
         if ("creative".equals(data.getString("creativeprofiles_current_profile"))) {
-            player.sendSystemMessage(Component.literal("Ya estás en el perfil creativo."));
+            MessageUtil.info(player, "Ya estás en el perfil creativo.");
             return;
         }
 
@@ -22,8 +24,8 @@ public class ProfileManager {
         ServerLevel creativeWorld = WorldUtil.findWorld(player, creativeWorldName);
 
         if (creativeWorld == null) {
-            player.sendSystemMessage(Component.literal("No encontré el mundo creativo: " + creativeWorldName));
-            player.sendSystemMessage(Component.literal("Créalo primero con Multiworld, por ejemplo: /mw create " + creativeWorldName + " NORMAL -g=FLAT"));
+            MessageUtil.error(player, "No encontré el mundo creativo: " + creativeWorldName);
+            MessageUtil.info(player, "Créalo primero con Multiworld.");
             return;
         }
 
@@ -31,6 +33,8 @@ public class ProfileManager {
         InventoryManager.saveInventory(player, "creativeprofiles_survival_inventory");
         XpManager.saveXp(player, "creativeprofiles_survival_xp");
         InventoryManager.saveEnderChest(player, "creativeprofiles_survival_enderchest");
+        CuriosCompat.saveCurios(player, "creativeprofiles_survival_curios");
+        CosmeticArmorCompat.saveCosmeticArmor(player, "creativeprofiles_survival_cosmetic_armor");
 
         player.getInventory().clearContent();
 
@@ -41,6 +45,8 @@ public class ProfileManager {
         }
 
         InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_creative_enderchest");
+        CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_creative_curios");
+        CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_creative_cosmetic_armor");
 
         boolean teleportedToCreative = false;
 
@@ -53,7 +59,7 @@ public class ProfileManager {
                 teleportedToCreative = true;
             } else {
                 data.remove("creativeprofiles_creative_position");
-                player.sendSystemMessage(Component.literal("La posición creativa guardada era inválida. Se usará el spawn creativo."));
+                MessageUtil.info(player, "La posición creativa guardada era inválida. Se usará el spawn creativo.");
             }
         }
 
@@ -70,14 +76,14 @@ public class ProfileManager {
         player.setGameMode(GameType.CREATIVE);
         data.putString("creativeprofiles_current_profile", "creative");
 
-        player.sendSystemMessage(Component.literal("Entraste al mundo creativo."));
+        MessageUtil.success(player, "Entraste al perfil creativo.");
     }
 
     public static void returnToSurvival(ServerPlayer player) {
         CompoundTag data = player.getPersistentData();
 
         if (!"creative".equals(data.getString("creativeprofiles_current_profile"))) {
-            player.sendSystemMessage(Component.literal("No estás en el perfil creativo. No se cambió nada."));
+            MessageUtil.info(player, "Ya estás en el perfil survival. No se cambió nada.");
             return;
         }
 
@@ -85,17 +91,21 @@ public class ProfileManager {
         ServerLevel survivalWorld = WorldUtil.findWorld(player, survivalWorldName);
 
         if (survivalWorld == null) {
-            player.sendSystemMessage(Component.literal("No encontré el mundo survival: " + survivalWorldName));
+            MessageUtil.error(player, "No encontré el mundo survival: " + survivalWorldName);
             return;
         }
 
         TeleportManager.savePosition(player, "creativeprofiles_creative_position");
         XpManager.saveXp(player, "creativeprofiles_creative_xp");
         InventoryManager.saveEnderChest(player, "creativeprofiles_creative_enderchest");
+        CuriosCompat.saveCurios(player, "creativeprofiles_creative_curios");
+        CosmeticArmorCompat.saveCosmeticArmor(player, "creativeprofiles_creative_cosmetic_armor");
 
         player.getInventory().clearContent();
 
         InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_survival_enderchest");
+        CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_survival_curios");
+        CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_survival_cosmetic_armor");
 
         player.setGameMode(GameType.SURVIVAL);
 
@@ -125,7 +135,7 @@ public class ProfileManager {
 
         data.putString("creativeprofiles_current_profile", "survival");
 
-        player.sendSystemMessage(Component.literal("Volviste al survival."));
+        MessageUtil.success(player, "Volviste al perfil survival.");
     }
 
     public static void syncProfileOnLogin(ServerPlayer player) {
@@ -146,6 +156,8 @@ public class ProfileManager {
             }
 
             InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_creative_enderchest");
+            CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_creative_curios");
+            CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_creative_cosmetic_armor");
             player.setGameMode(GameType.CREATIVE);
 
             if (!isCreativeDimension(player.level().dimension().location().toString())) {
@@ -164,7 +176,7 @@ public class ProfileManager {
                 }
             }
 
-            player.sendSystemMessage(Component.literal("Perfil creativo restaurado."));
+            MessageUtil.info(player, "Perfil creativo restaurado.");
             return;
         }
 
@@ -174,9 +186,11 @@ public class ProfileManager {
             }
 
             InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_survival_enderchest");
+            CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_survival_curios");
+            CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_survival_cosmetic_armor");
             player.setGameMode(GameType.SURVIVAL);
 
-            player.sendSystemMessage(Component.literal("Perfil survival restaurado."));
+            MessageUtil.info(player, "Perfil survival restaurado.");
         }
     }
 
@@ -186,7 +200,7 @@ public class ProfileManager {
 
     public static void backupCurrentProfile(ServerPlayer player) {
         saveCurrentProfile(player);
-        player.sendSystemMessage(Component.literal("Backup del perfil actual guardado."));
+        MessageUtil.success(player, "Backup del perfil actual guardado.");
     }
 
     private static void saveCurrentProfile(ServerPlayer player) {
@@ -197,12 +211,16 @@ public class ProfileManager {
             TeleportManager.savePosition(player, "creativeprofiles_creative_position");
             XpManager.saveXp(player, "creativeprofiles_creative_xp");
             InventoryManager.saveEnderChest(player, "creativeprofiles_creative_enderchest");
+            CuriosCompat.saveCurios(player, "creativeprofiles_creative_curios");
+            CosmeticArmorCompat.saveCosmeticArmor(player, "creativeprofiles_creative_cosmetic_armor");
             return;
         }
 
         TeleportManager.savePosition(player, "creativeprofiles_survival_position");
         XpManager.saveXp(player, "creativeprofiles_survival_xp");
         InventoryManager.saveEnderChest(player, "creativeprofiles_survival_enderchest");
+        CuriosCompat.saveCurios(player, "creativeprofiles_survival_curios");
+        CosmeticArmorCompat.saveCosmeticArmor(player, "creativeprofiles_survival_cosmetic_armor");
     }
 
     public static boolean isCreativeDimension(String dimension) {
