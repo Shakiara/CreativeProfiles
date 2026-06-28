@@ -104,7 +104,7 @@ Allow other mods to interact with Creative Profiles.
 
 Example:
 
-```java
+```text
 ProfileManager.getCurrentProfile(player);
 
 ProfileManager.switchProfile(player, "builder");
@@ -152,3 +152,24 @@ Automatic migration of player data from previous versions when possible.
 # Long-Term Vision
 
 Transform Creative Profiles from a simple Creative/Survival switcher into a complete player profile management system for NeoForge servers, allowing multiple independent gameplay profiles while remaining lightweight, server-side, and highly compatible with other mods.
+
+---
+
+## Future Structure
+
+```text
+CreativeProfiles
+│
+├── .github/
+├── docs/                ← (para futuras guías e imágenes)
+├── external-libs/       ← ignorado por Git (.gitignore)
+├── gradle/
+├── src/
+├── CHANGELOG.md
+├── LICENSE.txt
+├── README.md
+├── ROADMAP.md
+├── CONTRIBUTING.md      ← futuro
+├── CODE_OF_CONDUCT.md   ← futuro
+└── SECURITY.md          ← futuro
+```
