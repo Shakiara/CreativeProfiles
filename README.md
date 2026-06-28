@@ -34,7 +34,7 @@ Instead of sharing the same inventory, Ender Chest, XP and position across world
 # Requirements
 
 * Minecraft **1.21.1**
-* **NeoForge 21.1.x**
+* **NeoForge 21.1.228**
 * **Multiworld** (used to manage separate worlds)
 
 ---
