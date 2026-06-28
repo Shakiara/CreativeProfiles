@@ -7,6 +7,7 @@ import com.shakiara.creativeprofiles.util.CommandUtil;
 import com.shakiara.creativeprofiles.util.MessageUtil;
 import com.shakiara.creativeprofiles.util.WorldUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.GameType;
@@ -157,61 +158,66 @@ public class ProfileManager {
             return;
         }
 
-        if ("creative".equals(profile)) {
-            player.getInventory().clearContent();
+        switch (profile) {
+            case "creative" -> syncCreativeProfile(player, data);
+            case "survival" -> syncSurvivalProfile(player, data);
+            default -> data.putString("creativeprofiles_current_profile", "survival");
+        }
+    }
 
-            if (data.contains("creativeprofiles_creative_inventory")) {
-                InventoryManager.loadInventory(player, "creativeprofiles_creative_inventory");
-            }
+    private static void syncCreativeProfile(ServerPlayer player, CompoundTag data) {
+        player.getInventory().clearContent();
 
-            if (data.contains("creativeprofiles_creative_xp")) {
-                XpManager.loadXp(player, "creativeprofiles_creative_xp");
-            } else {
-                XpManager.clearXp(player);
-            }
+        if (data.contains("creativeprofiles_creative_inventory")) {
+            InventoryManager.loadInventory(player, "creativeprofiles_creative_inventory");
+        }
 
-            InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_creative_enderchest");
-            CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_creative_curios");
-            CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_creative_cosmetic_armor");
-            forceGameMode(player, GameType.CREATIVE);
+        if (data.contains("creativeprofiles_creative_xp")) {
+            XpManager.loadXp(player, "creativeprofiles_creative_xp");
+        } else {
+            XpManager.clearXp(player);
+        }
 
-            if (!isCreativeDimension(player.level().dimension().location().toString())) {
-                ServerLevel creativeWorld = WorldUtil.findWorld(player, Config.CREATIVE_WORLD.get());
+        InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_creative_enderchest");
+        CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_creative_curios");
+        CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_creative_cosmetic_armor");
+        forceGameMode(player, GameType.CREATIVE);
 
-                if (data.contains("creativeprofiles_creative_position")) {
-                    TeleportManager.teleportToSavedPosition(player, "creativeprofiles_creative_position");
-                } else if (creativeWorld != null) {
-                    player.getPersistentData().putBoolean(CommandUtil.INTERNAL_TELEPORT_KEY, true);
+        if (!isCreativeDimension(player.level().dimension().location().toString())) {
+            ServerLevel creativeWorld = WorldUtil.findWorld(player, Config.CREATIVE_WORLD.get());
 
-                    try {
-                        WorldUtil.teleportToWorldSpawn(player, creativeWorld);
-                    } finally {
-                        player.getPersistentData().remove(CommandUtil.INTERNAL_TELEPORT_KEY);
-                    }
+            if (data.contains("creativeprofiles_creative_position")) {
+                TeleportManager.teleportToSavedPosition(player, "creativeprofiles_creative_position");
+            } else if (creativeWorld != null) {
+                player.getPersistentData().putBoolean(CommandUtil.INTERNAL_TELEPORT_KEY, true);
+
+                try {
+                    WorldUtil.teleportToWorldSpawn(player, creativeWorld);
+                } finally {
+                    player.getPersistentData().remove(CommandUtil.INTERNAL_TELEPORT_KEY);
                 }
             }
-
-            forceGameMode(player, GameType.CREATIVE);
-            MessageUtil.info(player, "Perfil creativo restaurado.");
-            return;
         }
 
-        if ("survival".equals(profile)) {
-            if (data.contains("creativeprofiles_survival_inventory")) {
-                InventoryManager.loadInventory(player, "creativeprofiles_survival_inventory");
-            }
+        forceGameMode(player, GameType.CREATIVE);
+        MessageUtil.info(player, "Perfil creativo restaurado.");
+    }
 
-            if (data.contains("creativeprofiles_survival_xp")) {
-                XpManager.loadXp(player, "creativeprofiles_survival_xp");
-            }
-
-            InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_survival_enderchest");
-            CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_survival_curios");
-            CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_survival_cosmetic_armor");
-            forceGameMode(player, GameType.SURVIVAL);
-
-            MessageUtil.info(player, "Perfil survival restaurado.");
+    private static void syncSurvivalProfile(ServerPlayer player, CompoundTag data) {
+        if (data.contains("creativeprofiles_survival_inventory")) {
+            InventoryManager.loadInventory(player, "creativeprofiles_survival_inventory");
         }
+
+        if (data.contains("creativeprofiles_survival_xp")) {
+            XpManager.loadXp(player, "creativeprofiles_survival_xp");
+        }
+
+        InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_survival_enderchest");
+        CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_survival_curios");
+        CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_survival_cosmetic_armor");
+        forceGameMode(player, GameType.SURVIVAL);
+
+        MessageUtil.info(player, "Perfil survival restaurado.");
     }
 
     public static void saveCurrentProfileOnLogout(ServerPlayer player) {
@@ -256,6 +262,10 @@ public class ProfileManager {
 
     private static void forceGameMode(ServerPlayer player, GameType gameType) {
         player.setGameMode(gameType);
-        player.getServer().execute(() -> player.setGameMode(gameType));
+
+        MinecraftServer server = player.getServer();
+        if (server != null) {
+            server.execute(() -> player.setGameMode(gameType));
+        }
     }
 }
