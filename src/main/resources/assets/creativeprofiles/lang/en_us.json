@@ -1,0 +1,13 @@
+{
+  "itemGroup.creativeprofiles": "Example Mod Tab",
+  "block.creativeprofiles.example_block": "Example Block",
+  "item.creativeprofiles.example_item": "Example Item",
+
+  "creativeprofiles.configuration.title": "Creative Profiles Configs",
+  "creativeprofiles.configuration.section.creativeprofiles.common.toml": "Creative Profiles Configs",
+  "creativeprofiles.configuration.section.creativeprofiles.common.toml.title": "Creative Profiles Configs",
+  "creativeprofiles.configuration.items": "Item List",
+  "creativeprofiles.configuration.logDirtBlock": "Log Dirt Block",
+  "creativeprofiles.configuration.magicNumberIntroduction": "Magic Number Text",
+  "creativeprofiles.configuration.magicNumber": "Magic Number"
+}
