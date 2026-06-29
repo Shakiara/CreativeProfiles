@@ -1,77 +1,107 @@
-# Creative Profiles Roadmap
+﻿# Creative Profiles Roadmap
 
-This document contains planned features and ideas for future versions of Creative Profiles.
+This document lists planned ideas for future versions of Creative Profiles. Items may change depending on testing, compatibility needs, and project priorities.
 
-> **Note**
->
-> Items listed here are ideas and goals. Their implementation order may change depending on development priorities.
+## Version 2.0.0
 
----
+### Major Refactor
 
-# Version 1.2.x
+- Replace hardcoded PersistentData keys with centralized constants.
+- Replace hardcoded profile names with constants.
+- Add a modular compatibility framework.
+- Add safer data migration for existing worlds.
+- Improve internal profile storage boundaries.
+- Reduce duplicated save/load logic across managers.
 
-## Possible Features
+### Dynamic Profiles
 
-### Compatibility
+Support custom profiles instead of only Survival and Creative.
 
-* Support for additional inventory-related mods.
-* Improved integration with server management mods.
+Possible examples:
 
-### Configuration
+- Builder
+- Testing
+- Skyblock
+- Adventure
+- Event
 
-* More configurable profile behavior.
-* Optional synchronization settings.
-* Optional automatic backups.
+Each profile could define:
 
-### Administration
+- Inventory
+- XP
+- Ender Chest
+- Position
+- Game mode
+- Advancements
+- Configuration
 
-* Additional debugging commands.
-* Better diagnostic information.
+### Compatibility Focus
 
----
+Additional compatibility work is planned for v2.0.0.
 
-# Version 2.0.0
+Possible areas:
 
-## Major Refactor
+- Accessories support
+- Additional backpack or inventory mods
+- More Curios-like integrations
+- Safer optional compatibility modules
+- Better diagnostics for compatibility failures
 
-### Internal Architecture
+### Public API
 
-* Replace hardcoded PersistentData keys with centralized constants.
-* Replace hardcoded profile names with constants.
-* Modular compatibility system.
-* Public API for other mods.
+Allow other mods to interact with Creative Profiles.
 
----
+Possible examples:
 
-## Dynamic Profiles
-
-Instead of only supporting:
-
-* Survival
-* Creative
-
-Support unlimited custom profiles, for example:
-
-* Builder
-* Hardcore
-* Testing
-* Skyblock
-* Adventure
-
-Each profile would have its own:
-
-* Inventory
-* XP
-* Ender Chest
-* Position
-* Game Mode
-* Configuration
+```text
+ProfileManager.getCurrentProfile(player)
+ProfileManager.switchProfile(player, "builder")
+ProfileManager.hasProfile(player, "builder")
+```
 
 ---
 
-## Profile Commands
+## Version 3.0.0
 
-Examples:
+### Advanced Administration
+
+- Admin tools for inspecting profile data in more detail.
+- Safer recovery workflows for corrupted or crossed profile data.
+- More detailed backup history.
+- Optional restore previews before applying profile data.
+- Better server logs for profile switches, restores, and repairs.
+
+### Profile Rules
+
+- Per-profile permissions.
+- Per-profile command restrictions.
+- Per-profile world restrictions.
+- Per-profile default inventory behavior.
+- Per-profile advancement and recipe options.
+
+### Automation
+
+- Scheduled backups.
+- Configurable automatic backup retention.
+- Optional automatic cleanup of old backups.
+- Optional warnings when profile data looks inconsistent.
+
+### User Experience
+
+- Cleaner command output.
+- Optional localization improvements.
+- Better help output for `/cp` commands.
+- More readable diagnostics for server owners.
+
+---
+
+## Long-Term Vision
+
+Creative Profiles should become a lightweight but reliable profile management system for NeoForge servers, with clean separation between gameplay profiles and strong recovery tools for server owners.
+
+### Future Profile Commands
+
+Possible commands:
 
 ```text
 /cp create builder
@@ -79,97 +109,20 @@ Examples:
 /cp list
 /cp switch builder
 /cp rename builder
+/cp clone survival builder
+/cp export builder
+/cp import builder
 ```
 
----
+### Future Ideas
 
-## Profile Configuration
-
-Each profile could define:
-
-* Target world
-* Default GameMode
-* Separate inventory
-* Separate Ender Chest
-* Separate XP
-* Separate health
-* Separate hunger
-* Separate spawn point
-
----
-
-## Public API
-
-Allow other mods to interact with Creative Profiles.
-
-Example:
-
-```text
-ProfileManager.getCurrentProfile(player);
-
-ProfileManager.switchProfile(player, "builder");
-```
-
----
-
-## Mod Compatibility Framework
-
-Provide a compatibility API where each supported mod has its own implementation.
-
-Example:
-
-```
-compat/
-    CuriosCompat.java
-    AccessoriesCompat.java
-    CreateCompat.java
-    RefinedStorageCompat.java
-```
-
----
-
-## Data Migration
-
-Automatic migration of player data from previous versions when possible.
-
----
-
-## Future Ideas
-
-* Per-profile statistics
-* Per-profile advancements
-* Per-profile recipes
-* Per-profile Curios
-* Per-profile accessories
-* Per-profile modded inventories
-* Profile export/import
-* Backup manager
-* Automatic profile recovery
-* GUI for profile management
-
----
-
-# Long-Term Vision
-
-Transform Creative Profiles from a simple Creative/Survival switcher into a complete player profile management system for NeoForge servers, allowing multiple independent gameplay profiles while remaining lightweight, server-side, and highly compatible with other mods.
-
----
-
-## Future Structure
-
-```text
-CreativeProfiles
-│
-├── .github/
-├── docs/                ← (para futuras guías e imágenes)
-├── external-libs/       ← ignorado por Git (.gitignore)
-├── gradle/
-├── src/
-├── CHANGELOG.md
-├── LICENSE.txt
-├── README.md
-├── ROADMAP.md
-├── CONTRIBUTING.md      ← futuro
-├── CODE_OF_CONDUCT.md   ← futuro
-└── SECURITY.md          ← futuro
-```
+- Per-profile statistics
+- Per-profile recipes
+- Per-profile health
+- Per-profile hunger
+- Per-profile spawn points
+- Profile export/import
+- More advanced backup management
+- Automatic data migration
+- GUI or admin panel support
+- Optional web/admin integration

@@ -1,5 +1,6 @@
 package com.shakiara.creativeprofiles.events;
 
+import com.shakiara.creativeprofiles.managers.BackupManager;
 import com.shakiara.creativeprofiles.managers.ProfileManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,6 +13,9 @@ public class PlayerEvents {
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             ProfileManager.syncProfileOnLogin(player);
+
+            // Cambio 1.2.x: backup automatico al entrar al servidor.
+            BackupManager.createAutoBackup(player, "login");
         }
     }
 

@@ -1,158 +1,110 @@
-# Creative Profiles
+﻿# Creative Profiles
 
-Separate Creative and Survival profiles for Minecraft servers.
+> Creative Profiles is currently in beta. It is functional and tested in active development environments, but server owners should keep backups and test updates before using them on production worlds.
 
-Creative Profiles allows each player to have completely independent Creative and Survival profiles, including inventory, experience, Ender Chest, position, and optional mod integrations.
+Separate Creative and Survival profiles for Minecraft NeoForge servers.
 
----
+Creative Profiles gives each player independent Survival and Creative profile data while keeping the mod lightweight and server-side.
 
 ## Features
 
 - Separate Survival and Creative inventories
-- Separate experience levels
+- Separate XP
 - Separate Ender Chests
 - Separate saved positions
-- Automatic world switching
-- Multiworld compatible
-- Curios API compatibility
-- Cosmetic Armor Reworked compatibility
-- Optional integrations (works even if compatibility mods are not installed)
+- Separate advancements
+- Separate Curios data, when Curios is installed
+- Separate Cosmetic Armor Reworked data, when installed
+- Manual profile backups
+- Automatic profile backups
+- Admin restore tools
+- Admin repair tool for swapped profile data
+- Multiworld support
 - Server-side only
-
----
 
 ## Supported Versions
 
-| Minecraft | NeoForge  | Multiworld | Status |
-|-----------|-----------|------------|--------|
-| 1.21.1 | 21.1.228+ | Required | Supported |
+| Minecraft | NeoForge | Status |
+| --- | --- | --- |
+| 1.21.1 | 21.1.228+ | Supported |
 
----
+## Required
 
-## Compatibility
+- NeoForge
+- Multiworld or another setup that provides the configured Creative world
 
-### Native Compatibility
+## Optional Compatibility
 
 | Mod | Status |
-|------|--------|
-| Curios API | ✅ Supported |
-| Cosmetic Armor Reworked | ✅ Supported |
+| --- | --- |
+| Curios API | Supported |
+| Cosmetic Armor Reworked | Supported |
 
-### Automatically Supported Through Curios
-
-These mods require no additional integration because they store their data through Curios.
-
-- KubeJS Curios
-- Refined Storage Curios Integration
-- Gravestone Curios Compatibility
-- Create Aeronautics Curios Compat
-
----
+Creative Profiles detects optional integrations automatically when they are installed.
 
 ## Commands
 
-| Command | Description |
-|----------|-------------|
-| `/creative` | Switch to Creative profile |
-| `/survival` | Return to Survival profile |
-| `/cp status` | Display current profile information |
-| `/cp version` | Display Creative Profiles version |
-| `/cp reload` | Reload configuration |
-| `/cp fix` | Attempt to repair profile data |
-
----
-
-## Installation
-
-1. Install NeoForge.
-2. Install Multiworld.
-3. Create or configure your Survival and Creative worlds with Multiworld.
-4. Place Creative Profiles in the server's `mods` folder.
-5. Start the server.
-6. Edit the Creative Profiles config if necessary.
-7. Restart the server.
-
-Required:
-
-- Multiworld
-
-Optional:
-
-- Curios API
-- Cosmetic Armor Reworked
-
-Creative Profiles requires Multiworld for world switching.
-Curios API and Cosmetic Armor Reworked are detected automatically when installed.
-
----
+| Command | Permission | Description |
+| --- | --- | --- |
+| `/creative` | Level 2 | Switches to the Creative profile. |
+| `/survival` | Level 2 | Switches to the Survival profile. |
+| `/cp status` | Level 2 | Shows your profile status. |
+| `/cp status <player>` | Level 4 | Shows another player's profile status. |
+| `/cp backup` | Level 2 | Creates a manual backup. |
+| `/cp backupstatus` | Level 2 | Shows manual and automatic backup status. |
+| `/cp restore survival <player>` | Level 4 | Restores a manual Survival backup. |
+| `/cp restore creative <player>` | Level 4 | Restores a manual Creative backup. |
+| `/cp restoreauto survival <player>` | Level 4 | Restores an automatic Survival backup. |
+| `/cp restoreauto creative <player>` | Level 4 | Restores an automatic Creative backup. |
+| `/cp swapdata <player>` | Level 4 | Swaps stored Survival and Creative data to repair crossed profiles. |
+| `/cp fix` | Level 2 | Repairs the current profile marker. |
+| `/cp version` | Level 2 | Shows version information. |
+| `/cp reload` | Level 4 | Shows current config values. |
 
 ## Configuration
 
-Example:
+Default config values:
 
 ```text
 creativeWorld = "creative"
-survivalWorld = "world"
+survivalWorld = "minecraft:overworld"
 ```
 
----
+The configured Creative world must exist before using `/creative`.
 
-## Building
+## Documentation
 
-Clone the repository:
+Command documentation is available in:
 
 ```text
-git clone https://github.com/Shakiara/CreativeProfiles.git
+docs/USAGE.md
+docs/info/
 ```
 
-Build:
+## Building
 
 ```text
 ./gradlew build
 ```
 
-Output:
+On Windows:
 
+```text
+gradlew.bat build
 ```
+
+Build output:
+
+```text
 build/libs/
 ```
 
----
-
 ## License
 
-Creative Profiles is licensed under the MIT License.
-
-See LICENSE.txt for details.
-
----
-
-## Roadmap
-
-Future plans are documented in:
-
-```
-ROADMAP.md
-```
-
----
-
-## Issues
-
-Found a bug?
-
-Please open an Issue on GitHub with:
-
-- Minecraft version
-- NeoForge version
-- Creative Profiles version
-- Installed compatibility mods
-- Latest.log (if available)
-
----
+Creative Profiles is licensed under the MIT License. See `LICENSE.txt`.
 
 ## Credits
 
-Created by
+Created by Shakiara Feliciano.
 
-**Shakiara Feliciano**
+

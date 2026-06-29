@@ -21,21 +21,24 @@ public class ProfileManager {
             return;
         }
 
-        String creativeWorldName = Config.CREATIVE_WORLD.get();
-        ServerLevel creativeWorld = WorldUtil.findWorld(player, creativeWorldName);
+        ServerLevel creativeWorld = WorldUtil.findWorld(player, Config.CREATIVE_WORLD.get());
 
         if (creativeWorld == null) {
-            MessageUtil.error(player, "No encontre el mundo creativo: " + creativeWorldName);
+            MessageUtil.error(player, "No encontre el mundo creativo: " + Config.CREATIVE_WORLD.get());
             MessageUtil.info(player, "Crealo primero con Multiworld.");
             return;
         }
 
+        BackupManager.createAutoBackup(player, "before_creative");
+
+        // Cambio 1.2.x: al entrar a creative siempre se guarda explicitamente el estado survival actual.
         TeleportManager.savePosition(player, "creativeprofiles_survival_position");
         InventoryManager.saveInventory(player, "creativeprofiles_survival_inventory");
         XpManager.saveXp(player, "creativeprofiles_survival_xp");
         InventoryManager.saveEnderChest(player, "creativeprofiles_survival_enderchest");
         CuriosCompat.saveCurios(player, "creativeprofiles_survival_curios");
         CosmeticArmorCompat.saveCosmeticArmor(player, "creativeprofiles_survival_cosmetic_armor");
+        AdvancementManager.saveAdvancements(player, "survival");
 
         player.getInventory().clearContent();
 
@@ -52,6 +55,7 @@ public class ProfileManager {
         InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_creative_enderchest");
         CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_creative_curios");
         CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_creative_cosmetic_armor");
+        AdvancementManager.loadAdvancementsOrEmpty(player, "creative");
 
         forceGameMode(player, GameType.CREATIVE);
 
@@ -94,26 +98,30 @@ public class ProfileManager {
             return;
         }
 
-        String survivalWorldName = Config.SURVIVAL_WORLD.get();
-        ServerLevel survivalWorld = WorldUtil.findWorld(player, survivalWorldName);
+        ServerLevel survivalWorld = WorldUtil.findWorld(player, Config.SURVIVAL_WORLD.get());
 
         if (survivalWorld == null) {
-            MessageUtil.error(player, "No encontre el mundo survival: " + survivalWorldName);
+            MessageUtil.error(player, "No encontre el mundo survival: " + Config.SURVIVAL_WORLD.get());
             return;
         }
 
+        BackupManager.createAutoBackup(player, "before_survival");
+
+        // Cambio 1.2.x: al volver a survival siempre se guarda explicitamente el estado creative actual.
         TeleportManager.savePosition(player, "creativeprofiles_creative_position");
         InventoryManager.saveInventory(player, "creativeprofiles_creative_inventory");
         XpManager.saveXp(player, "creativeprofiles_creative_xp");
         InventoryManager.saveEnderChest(player, "creativeprofiles_creative_enderchest");
         CuriosCompat.saveCurios(player, "creativeprofiles_creative_curios");
         CosmeticArmorCompat.saveCosmeticArmor(player, "creativeprofiles_creative_cosmetic_armor");
+        AdvancementManager.saveAdvancements(player, "creative");
 
         player.getInventory().clearContent();
 
         InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_survival_enderchest");
         CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_survival_curios");
         CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_survival_cosmetic_armor");
+        AdvancementManager.loadAdvancementsOrEmpty(player, "survival");
 
         forceGameMode(player, GameType.SURVIVAL);
 
@@ -181,6 +189,7 @@ public class ProfileManager {
         InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_creative_enderchest");
         CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_creative_curios");
         CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_creative_cosmetic_armor");
+        AdvancementManager.loadAdvancementsOrEmpty(player, "creative");
         forceGameMode(player, GameType.CREATIVE);
 
         if (!isCreativeDimension(player.level().dimension().location().toString())) {
@@ -215,6 +224,7 @@ public class ProfileManager {
         InventoryManager.loadEnderChestOrEmpty(player, "creativeprofiles_survival_enderchest");
         CuriosCompat.loadCuriosOrEmpty(player, "creativeprofiles_survival_curios");
         CosmeticArmorCompat.loadCosmeticArmorOrEmpty(player, "creativeprofiles_survival_cosmetic_armor");
+        AdvancementManager.loadAdvancementsOrEmpty(player, "survival");
         forceGameMode(player, GameType.SURVIVAL);
 
         MessageUtil.info(player, "Perfil survival restaurado.");
@@ -231,24 +241,30 @@ public class ProfileManager {
 
     private static void saveCurrentProfile(ServerPlayer player) {
         CompoundTag data = player.getPersistentData();
-        String profile = data.getString("creativeprofiles_current_profile");
+        String dimension = player.level().dimension().location().toString();
+        String profile = isCreativeDimension(dimension) ? "creative" : "survival";
 
+        // Cambio 1.2.x: al cerrar sesion guarda segun dimension real, no solo segun marcador persistente.
         if ("creative".equals(profile)) {
+            data.putString("creativeprofiles_current_profile", "creative");
             TeleportManager.savePosition(player, "creativeprofiles_creative_position");
             InventoryManager.saveInventory(player, "creativeprofiles_creative_inventory");
             XpManager.saveXp(player, "creativeprofiles_creative_xp");
             InventoryManager.saveEnderChest(player, "creativeprofiles_creative_enderchest");
             CuriosCompat.saveCurios(player, "creativeprofiles_creative_curios");
             CosmeticArmorCompat.saveCosmeticArmor(player, "creativeprofiles_creative_cosmetic_armor");
+            AdvancementManager.saveAdvancements(player, "creative");
             return;
         }
 
+        data.putString("creativeprofiles_current_profile", "survival");
         TeleportManager.savePosition(player, "creativeprofiles_survival_position");
         InventoryManager.saveInventory(player, "creativeprofiles_survival_inventory");
         XpManager.saveXp(player, "creativeprofiles_survival_xp");
         InventoryManager.saveEnderChest(player, "creativeprofiles_survival_enderchest");
         CuriosCompat.saveCurios(player, "creativeprofiles_survival_curios");
         CosmeticArmorCompat.saveCosmeticArmor(player, "creativeprofiles_survival_cosmetic_armor");
+        AdvancementManager.saveAdvancements(player, "survival");
     }
 
     public static boolean isCreativeDimension(String dimension) {

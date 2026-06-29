@@ -11,6 +11,7 @@ public class CommandRegistry {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
                 Commands.literal("creative")
+                        // Cambio 1.2.0: los comandos principales de cambio de perfil requieren nivel 2.
                         .requires(source -> source.hasPermission(2))
                         .executes(context -> {
                             ServerPlayer player = context.getSource().getPlayerOrException();
@@ -21,6 +22,7 @@ public class CommandRegistry {
 
         dispatcher.register(
                 Commands.literal("survival")
+                        // Cambio 1.2.0: los comandos principales de cambio de perfil requieren nivel 2.
                         .requires(source -> source.hasPermission(2))
                         .executes(context -> {
                             ServerPlayer player = context.getSource().getPlayerOrException();
