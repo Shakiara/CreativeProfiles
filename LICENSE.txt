@@ -1,21 +1,29 @@
-MIT License
+Creative Profiles License
 
 Copyright (c) 2026 Shakiara Feliciano Navarro
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+All rights reserved.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+You are allowed to download and use Creative Profiles for personal servers,
+private servers, and modpacks, as long as this mod is not sold, reuploaded,
+or redistributed as a standalone file without permission.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+You are not allowed to:
+
+- Sell this mod or any modified version of it.
+- Reupload this mod to other websites without permission.
+- Claim this mod or its source code as your own.
+- Redistribute modified versions without permission.
+- Use this mod's name, branding, or assets to represent an unofficial version.
+
+Modpacks may include this mod only if:
+
+- The mod is not sold as a standalone product.
+- Credit is given to the original author.
+- The mod download points to an official project page when possible.
+
+This software is provided "as is", without warranty of any kind.
+The author is not responsible for damages, data loss, server issues,
+or other problems caused by the use of this software.
+
+For permissions, contact the author.
